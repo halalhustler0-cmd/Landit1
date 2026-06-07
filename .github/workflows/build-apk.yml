@@ -30,8 +30,16 @@ jobs:
       - name: Build web assets
         run: npm run build
 
-      - name: Sync Capacitor
-        run: npx cap sync android
+      - name: Copy web assets into android
+        run: cp -r www/* android/app/src/main/assets/public/
+
+      - name: Download Gradle wrapper
+        run: |
+          cd android
+          curl -L https://services.gradle.org/distributions/gradle-8.2.1-bin.zip -o gradle.zip
+          unzip -q gradle.zip
+          mkdir -p gradle/wrapper
+          cp gradle-8.2.1/bin/gradle gradle/wrapper/gradlew || true
 
       - name: Make gradlew executable
         run: chmod +x android/gradlew
