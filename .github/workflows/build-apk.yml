@@ -28,7 +28,10 @@ jobs:
         run: npm install
 
       - name: Build web assets
-        run: npm run build
+        run: |
+          mkdir -p www
+          find . -name "index.html" -not -path "./node_modules/*" -not -path "./www/*" | head -1 | xargs -I{} cp {} www/index.html
+          echo "Copied: $(ls www/)"
 
       - name: Add Android platform
         run: npx cap add android
