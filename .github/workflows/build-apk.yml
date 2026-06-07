@@ -24,14 +24,18 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Show repo structure
+        run: find . -name "*.html" -not -path "./node_modules/*"
+
       - name: Install dependencies
         run: npm install
 
       - name: Build web assets
         run: |
           mkdir -p www
-          find . -name "index.html" -not -path "./node_modules/*" -not -path "./www/*" | head -1 | xargs -I{} cp {} www/index.html
-          echo "Copied: $(ls www/)"
+          find . -name "*.html" -not -path "./node_modules/*" -not -path "./www/*"
+          cp $(find . -name "index.html" -not -path "./node_modules/*" -not -path "./www/*" | head -1) www/index.html
+          ls -la www/
 
       - name: Add Android platform
         run: npx cap add android
